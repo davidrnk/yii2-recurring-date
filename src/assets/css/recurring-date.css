@@ -1,0 +1,12 @@
+/* Basic styles for the recurring date widget */
+.recurring-date-widget .form-control[readonly] {
+    background-color: #f8f9fa;
+}
+
+.recurring-date-widget #rdw-preview, .recurring-date-widget .preview {
+    min-height: 38px;
+}
+
+.recurring-date-widget .modal .form-label {
+    font-weight: 600;
+}
