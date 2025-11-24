@@ -6,7 +6,3 @@
 .recurring-date-widget #rdw-preview, .recurring-date-widget .preview {
     min-height: 38px;
 }
-
-.recurring-date-widget .modal .form-label {
-    font-weight: 600;
-}

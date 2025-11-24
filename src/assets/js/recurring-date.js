@@ -54,38 +54,47 @@
             return MAP[index - 1] || index;
         },
 
-        human(cfg, locale) {
+        human(cfg, locale, translations) {
             if (!cfg || !cfg.type) return '—';
+
+            translations = translations || {};
 
             switch (cfg.type) {
                 case 'no_expiration':
-                    return 'No expiration';
+                    return translations.no_expiration || 'No expiration';
 
                 case 'interval': {
                     let v = cfg.value || 1;
                     let u = cfg.unit || 'days';
 
                     const label = (u === 'days')
-                        ? (v === 1 ? 'day' : 'days')
+                        ? (v === 1 ? (translations.day || 'day') : (translations.days || 'days'))
                         : (u === 'months')
-                            ? (v === 1 ? 'month' : 'months')
+                            ? (v === 1 ? (translations.month || 'month') : (translations.months || 'months'))
                             : (u === 'years')
-                                ? (v === 1 ? 'year' : 'years')
+                                ? (v === 1 ? (translations.year || 'year') : (translations.years || 'years'))
                                 : u;
 
-                    return `Every ${v} ${label}.`;
+                    const every = translations.every || 'Every';
+                    return `${every} ${v} ${label}.`;
                 }
 
-                case 'monthly':
-                    return `Every month, day ${cfg.day || 1}.`;
+                case 'monthly': {
+                    const template = translations.every_month_day || 'Every month, day {day}.';
+                    return template.replace('{day}', cfg.day || 1);
+                }
 
                 case 'yearly': {
-                    const m = RDWEngine.monthName(cfg.month || 1, locale);
-                    return `Every year, ${cfg.day || 1} of ${m}.`;
+                    const monthsList = translations.months_list || {};
+                    const m = monthsList[cfg.month || 1] || RDWEngine.monthName(cfg.month || 1, locale);
+                    const template = translations.every_year_day || 'Every year, {day} of {month}.';
+                    return template.replace('{day}', cfg.day || 1).replace('{month}', m);
                 }
 
-                case 'specific_date':
-                    return `On ${cfg.date || '—'}.`;
+                case 'specific_date': {
+                    const template = translations.on_date || 'Expires on {date}.';
+                    return template.replace('{date}', cfg.date || '—');
+                }
 
                 default:
                     return '';
@@ -149,7 +158,7 @@
 
             c.find(inst.sel.specificDate).val(cfg.date || '');
 
-            inst.$preview.text(RDWEngine.human(cfg, inst.locale));
+            inst.$preview.text(RDWEngine.human(cfg, inst.locale, inst.translations));
         },
 
         showModal(inst) {
@@ -173,6 +182,7 @@
     function RecurringDateInstance($container, options) {
         this.$container = $container;
         this.locale = options.locale || navigator.language || 'en-US';
+        this.translations = options.translations || {};
 
         this.sel = {
             btnOpen: '.rdw-open-btn',
@@ -236,7 +246,7 @@
             inst.sel.specificDate
         ].join(', '), function () {
             const cfg = inst.buildConfig();
-            inst.$preview.text(RDWEngine.human(cfg, inst.locale));
+            inst.$preview.text(RDWEngine.human(cfg, inst.locale, inst.translations));
         });
 
         // Save
@@ -295,7 +305,7 @@
         const json = JSON.stringify(cfg);
         this.$hidden.val(json).trigger('change');
 
-        const human = this.$hidden.data('human') || RDWEngine.human(cfg, this.locale);
+        const human = this.$hidden.data('human') || RDWEngine.human(cfg, this.locale, this.translations);
         this.$text.val(human);
 
         RDWUI.hideModal(this);

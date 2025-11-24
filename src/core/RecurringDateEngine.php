@@ -85,45 +85,45 @@ class RecurringDateEngine
 
         // month names map via translations (fallback to english)
         $months = [
-            1 => Yii::t('app','January'),
-            2 => Yii::t('app','February'),
-            3 => Yii::t('app','March'),
-            4 => Yii::t('app','April'),
-            5 => Yii::t('app','May'),
-            6 => Yii::t('app','June'),
-            7 => Yii::t('app','July'),
-            8 => Yii::t('app','August'),
-            9 => Yii::t('app','September'),
-            10 => Yii::t('app','October'),
-            11 => Yii::t('app','November'),
-            12 => Yii::t('app','December'),
+            1 => Yii::t('davidrnk.recurring','January'),
+            2 => Yii::t('davidrnk.recurring','February'),
+            3 => Yii::t('davidrnk.recurring','March'),
+            4 => Yii::t('davidrnk.recurring','April'),
+            5 => Yii::t('davidrnk.recurring','May'),
+            6 => Yii::t('davidrnk.recurring','June'),
+            7 => Yii::t('davidrnk.recurring','July'),
+            8 => Yii::t('davidrnk.recurring','August'),
+            9 => Yii::t('davidrnk.recurring','September'),
+            10 => Yii::t('davidrnk.recurring','October'),
+            11 => Yii::t('davidrnk.recurring','November'),
+            12 => Yii::t('davidrnk.recurring','December'),
         ];
 
         switch ($cfg['type']) {
             case 'no_expiration':
-                return Yii::t('app', 'No expiration');
+                return Yii::t('davidrnk.recurring', 'No expiration');
             case 'interval':
                 $v = (int)($cfg['value'] ?? 1);
                 $u = $cfg['unit'] ?? 'days';
                 $unitLabels = [
-                    'days' => $v === 1 ? Yii::t('app', 'day') : Yii::t('app', 'days'),
-                    'months' => $v === 1 ? Yii::t('app', 'month') : Yii::t('app', 'months'),
-                    'years' => $v === 1 ? Yii::t('app', 'year') : Yii::t('app', 'years'),
+                    'days' => $v === 1 ? Yii::t('davidrnk.recurring', 'day') : Yii::t('davidrnk.recurring', 'days'),
+                    'months' => $v === 1 ? Yii::t('davidrnk.recurring', 'month') : Yii::t('davidrnk.recurring', 'months'),
+                    'years' => $v === 1 ? Yii::t('davidrnk.recurring', 'year') : Yii::t('davidrnk.recurring', 'years'),
                 ];
                 $unitLabel = $unitLabels[$u] ?? $u;
-                return Yii::t('app', 'Every {n} {unit}.', ['n' => $v, 'unit' => $unitLabel]);
+                return Yii::t('davidrnk.recurring', 'Every {n} {unit}.', ['n' => $v, 'unit' => $unitLabel]);
             case 'monthly':
                 $day = (int)($cfg['day'] ?? 1);
-                return Yii::t('app', 'Every month, day {day}.', ['day' => $day]);
+                return Yii::t('davidrnk.recurring', 'Every month, day {day}.', ['day' => $day]);
             case 'yearly':
                 $day = (int)($cfg['day'] ?? 1);
                 $month = (int)($cfg['month'] ?? 1);
                 $monthName = $months[$month] ?? $month;
-                return Yii::t('app', 'Every year, {day} of {month}.', ['day' => $day, 'month' => $monthName]);
+                return Yii::t('davidrnk.recurring', 'Every year, {day} of {month}.', ['day' => $day, 'month' => $monthName]);
             case 'specific_date':
                 if (empty($cfg['date'])) return '';
                 $d = new DateTime($cfg['date']);
-                return Yii::t('app', 'Expires on {date}.', ['date' => $d->format('Y-m-d')]);
+                return Yii::t('davidrnk.recurring', 'Expires on {date}.', ['date' => $d->format('Y-m-d')]);
             default:
                 return '';
         }
