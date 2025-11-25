@@ -50,6 +50,7 @@ return [
     'Previous (clamp to last day)' => 'Anterior (ajustar al último día)',
     'Next (advance one day)' => 'Adelantar (avanzar un día)',
     'When the chosen day does not exist in a month, decide whether to use the previous valid day or advance by one day.' => 'Cuando el día elegido no existe en un mes, decide si usar el día válido anterior o adelantar un día.',
+    'When the chosen day may not exist in some years (e.g. Feb 29), decide whether to use the previous valid day or advance by one day.' => 'Cuando el día elegido puede no existir en algunos años (p. ej. 29 de feb), decide si usar el día válido anterior o adelantar un día.',
     'If the selected day does not exist in a month, the widget will follow the Adjustment setting: "Previous" clamps to the month\'s last valid day; "Next" advances to the following day.' => 'Si el día seleccionado no existe en un mes, el widget seguirá la opción Ajuste: "Anterior" ajusta al último día válido del mes; "Adelantar" avanzará al día siguiente.',
     'Note: if the year is not leap the date will be adjusted to 28; in leap years 29 will be used.' => 'Nota: si el año no es bisiesto la fecha se ajustará a 28; en años bisiestos se usará 29.',
 ];
