@@ -141,6 +141,7 @@ class RecurringDate extends Widget
     {
         $defaults = [
             // Main labels
+            'title_modal' => Yii::t('davidrnk.recurring', 'Configure recurring period'),
             'type' => Yii::t('davidrnk.recurring', 'Type'),
             'configure' => Yii::t('davidrnk.recurring', 'Configure'),
             'preview' => Yii::t('davidrnk.recurring', 'Preview'),

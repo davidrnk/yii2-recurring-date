@@ -43,7 +43,7 @@ if (is_string($value)) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h5 class="modal-title"><?= Yii::t('davidrnk.recurring', 'Configure recurring period') ?></h5>
+                    <h5 class="modal-title"><?= $labels['title_modal'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
