@@ -88,6 +88,16 @@ if (is_string($value)) {
                                 <h6><i class="bi bi-calendar-month"></i> <?= Yii::t('davidrnk.recurring', 'Monthly') ?></h6>
                                 <label class="form-label"><?= $labels['month_day'] ?> (1-31)</label>
                                 <input type="number" class="form-control rdw-monthly-day" min="1" max="31" value="1">
+
+                                <!-- Adjustment option (shown only when applicable) -->
+                                <div class="mt-2 rdw-adjust-wrapper d-none">
+                                    <label class="form-label small fw-bold"><?= $labels['adjust'] ?></label>
+                                    <select class="form-select rdw-adjust">
+                                        <option value="previous"><?= $labels['adjust_previous'] ?></option>
+                                        <option value="next"><?= $labels['adjust_next'] ?></option>
+                                    </select>
+                                    <div class="form-text text-muted small"><?= Yii::t('davidrnk.recurring', 'When the chosen day does not exist in a month, decide whether to use the previous valid day or advance by one day.') ?></div>
+                                </div>
                             </div>
                         </div>
 
@@ -108,6 +118,15 @@ if (is_string($value)) {
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+                                </div>
+                                <!-- Adjustment option for yearly when applicable (e.g., Feb 29) -->
+                                <div class="mt-2 rdw-adjust-wrapper-yearly d-none">
+                                    <label class="form-label small fw-bold"><?= $labels['adjust'] ?></label>
+                                    <select class="form-select rdw-adjust">
+                                        <option value="previous"><?= $labels['adjust_previous'] ?></option>
+                                        <option value="next"><?= $labels['adjust_next'] ?></option>
+                                    </select>
+                                    <div class="form-text text-muted small"><?= Yii::t('davidrnk.recurring', 'When the chosen day may not exist in some years (e.g. Feb 29), decide whether to use the previous valid day or advance by one day.') ?></div>
                                 </div>
                             </div>
                         </div>

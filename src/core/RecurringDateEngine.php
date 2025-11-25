@@ -42,22 +42,67 @@ class RecurringDateEngine
 
                 case 'monthly':
                     $day = max(1, min(31, (int)($config['day'] ?? 1)));
+                    $adjust = ($config['adjust'] ?? 'previous'); // 'previous' (default) or 'next'
+
                     // move to next month where day exists
                     $dt->modify('first day of next month');
-                    $dt->setDate((int)$dt->format('Y'), (int)$dt->format('m'), $day);
+                    $year = (int)$dt->format('Y');
+                    $month = (int)$dt->format('m');
+                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+                    if ($day <= $daysInMonth) {
+                        $dt->setDate($year, $month, $day);
+                    } else {
+                        if ($adjust === 'next') {
+                            // advance to first day of following month
+                            $dt->modify('+1 month');
+                            $dt->setDate((int)$dt->format('Y'), (int)$dt->format('m'), 1);
+                        } else {
+                            // default: clamp to last day of the month
+                            $dt->setDate($year, $month, $daysInMonth);
+                        }
+                    }
 
                     return $dt;
 
                 case 'yearly':
                     $day = max(1, min(31, (int)($config['day'] ?? 1)));
                     $month = max(1, min(12, (int)($config['month'] ?? 1)));
-                    $year = (int)$dt->format('Y');
-                    $cand = DateTime::createFromFormat('!Y-n-j', $year . '-' . $month . '-' . $day);
+                    $adjust = ($config['adjust'] ?? 'previous'); // 'previous' or 'next'
 
-                    if ($cand <= $dt) {
-                        $cand->modify('+1 year');
+                    // invalidate obviously impossible combos:
+                    // - February > 29 is impossible
+                    if ($month === 2 && $day > 29) {
+                        return null;
                     }
 
+                    // - months with 30 days cannot have day 31
+                    if (in_array($month, [4, 6, 9, 11], true) && $day === 31) {
+                        return null;
+                    }
+
+                    $year = (int)$dt->format('Y');
+                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+                    if ($day <= $daysInMonth) {
+                        $cand = DateTime::createFromFormat('!Y-n-j', $year . '-' . $month . '-' . $day);
+                        if ($cand === false) return null;
+                        return $cand;
+                    }
+
+                    // day > daysInMonth (e.g., 29 Feb in non-leap year)
+                    if ($adjust === 'next') {
+                        // advance to first day of following month
+                        $cand = DateTime::createFromFormat('!Y-n-j', $year . '-' . $month . '-' . $daysInMonth);
+                        if ($cand === false) return null;
+                        $cand->modify('+1 day');
+                        return $cand;
+                    }
+
+                    // default: clamp to last day of the month (previous)
+                    $dayAdj = $daysInMonth;
+                    $cand = DateTime::createFromFormat('!Y-n-j', $year . '-' . $month . '-' . $dayAdj);
+                    if ($cand === false) return null;
                     return $cand;
 
                 case 'specific_date':

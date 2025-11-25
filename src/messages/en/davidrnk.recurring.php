@@ -46,4 +46,10 @@ return [
     'October' => 'October',
     'November' => 'November',
     'December' => 'December',
+    'Adjustment' => 'Adjustment',
+    'Previous (clamp to last day)' => 'Previous (clamp to last day)',
+    'Next (advance one day)' => 'Next (advance one day)',
+    'When the chosen day does not exist in a month, decide whether to use the previous valid day or advance by one day.' => 'When the chosen day does not exist in a month, decide whether to use the previous valid day or advance by one day.',
+    'If the selected day does not exist in a month, the widget will follow the Adjustment setting: "Previous" clamps to the month\'s last valid day; "Next" advances to the following day.' => 'If the selected day does not exist in a month, the widget will follow the Adjustment setting: "Previous" clamps to the month\'s last valid day; "Next" advances to the following day.',
+    'Note: if the year is not leap the date will be adjusted to 28; in leap years 29 will be used.' => 'Note: if the year is not leap the date will be adjusted to 28; in leap years 29 will be used.',
 ];

@@ -147,16 +147,20 @@ class RecurringDate extends Widget
             'preview' => Yii::t('davidrnk.recurring', 'Preview'),
             'save' => Yii::t('davidrnk.recurring', 'Save'),
             'cancel' => Yii::t('davidrnk.recurring', 'Cancel'),
-            
+
             // Type options
             'interval' => Yii::t('davidrnk.recurring', 'Interval'),
-            
+
             // Interval labels
             'quantity' => Yii::t('davidrnk.recurring', 'Quantity (N)'),
             'unit' => Yii::t('davidrnk.recurring', 'Unit'),
-            
+
             // Monthly labels
             'month_day' => Yii::t('davidrnk.recurring', 'Month day'),
+            // Adjustment option
+            'adjust' => Yii::t('davidrnk.recurring', 'Adjustment'),
+            'adjust_previous' => Yii::t('davidrnk.recurring', 'Previous (clamp to last day)'),
+            'adjust_next' => Yii::t('davidrnk.recurring', 'Next (advance one day)'),
         ];
 
         return array_merge($defaults, $this->labels);
@@ -180,6 +184,9 @@ class RecurringDate extends Widget
             'every_month_day' => Yii::t('davidrnk.recurring', 'Every month, day {day}.'),
             'every_year_day' => Yii::t('davidrnk.recurring', 'Every year, {day} of {month}.'),
             'on_date' => Yii::t('davidrnk.recurring', 'Expires on {date}.'),
+            // notes for UI warnings about adjustments
+            'adjust_months_note' => Yii::t('davidrnk.recurring', 'If the selected day does not exist in a month, the widget will follow the Adjustment setting: "Previous" clamps to the month\'s last valid day; "Next" advances to the following day.'),
+            'feb29_note' => Yii::t('davidrnk.recurring', 'Note: if the year is not leap the date will be adjusted to 28; in leap years 29 will be used.'),
             'months_list' => [
                 1 => Yii::t('davidrnk.recurring', 'January'),
                 2 => Yii::t('davidrnk.recurring', 'February'),
