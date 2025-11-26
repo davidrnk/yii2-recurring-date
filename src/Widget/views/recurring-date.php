@@ -7,10 +7,13 @@
 /** @var string $hiddenId */
 /** @var string $btnId */
 /** @var mixed $value */
+/** @var array $labels */
+/** @var array $months */
 
 use davidrnk\RecurringDate\Core\RecurringDateEngine;
 use yii\helpers\Html;
 
+$labels = $labels ?? [];
 $human = '';
 if (is_string($value)) {
     $decoded = json_decode($value, true);
@@ -25,7 +28,7 @@ if (is_string($value)) {
 ?>
 <div class="recurring-date-widget" id="<?= Html::encode($prefix) ?>-widget" data-prefix="<?= Html::encode($prefix) ?>">
     <div class="input-group">
-        <?= Html::button(Yii::t('app', 'Configure'), ['type' => 'button', 'class' => 'btn btn-outline-primary rdw-open-btn', 'id' => Html::encode($btnId)]) ?>
+        <?= Html::button($labels['configure'], ['type' => 'button', 'class' => 'btn btn-outline-primary rdw-open-btn', 'id' => Html::encode($btnId)]) ?>
         <?= strtr($textInput, ['id="'.Html::encode($textId).'"' => 'id="'.Html::encode($textId).'" class="form-control rdw-text"']) ?>
     </div>
 
@@ -40,7 +43,7 @@ if (is_string($value)) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h5 class="modal-title"><?= Yii::t('app', 'Configure recurring period') ?></h5>
+                    <h5 class="modal-title"><?= $labels['title_modal'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -48,31 +51,31 @@ if (is_string($value)) {
                     <div class="row">
                         <!-- Type -->
                         <div class="col-12 mb-3">
-                            <label class="form-label fw-bold"><?= Yii::t('app', 'Type') ?></label>
+                            <label class="form-label fw-bold"><?= $labels['type'] ?></label>
                             <select class="form-select rdw-type">
-                                <option value="no_expiration"><?= Yii::t('app', 'No expiration') ?></option>
-                                <option value="interval"><?= Yii::t('app', 'Interval') ?></option>
-                                <option value="monthly"><?= Yii::t('app', 'Monthly (Day of the month)') ?></option>
-                                <option value="yearly"><?= Yii::t('app', 'Yearly (Day and month)') ?></option>
-                                <option value="specific_date"><?= Yii::t('app', 'Specific date') ?></option>
+                                <option value="no_expiration"><?= Yii::t('davidrnk.recurring', 'No expiration') ?></option>
+                                <option value="interval"><?= Yii::t('davidrnk.recurring', 'Interval') ?></option>
+                                <option value="monthly"><?= Yii::t('davidrnk.recurring', 'Monthly (Day of the month)') ?></option>
+                                <option value="yearly"><?= Yii::t('davidrnk.recurring', 'Yearly (Day and month)') ?></option>
+                                <option value="specific_date"><?= Yii::t('davidrnk.recurring', 'Specific date') ?></option>
                             </select>
                         </div>
 
                         <!-- Interval -->
                         <div class="col-12 rdw-section-interval">
                             <div class="mb-3 p-3 border rounded" style="background: #f9f9f9;">
-                                <h6><i class="bi bi-hourglass-split"></i> <?= Yii::t('app', 'Interval') ?></h6>
+                                <h6><i class="bi bi-hourglass-split"></i> <?= $labels['interval'] ?></h6>
                                 <div class="row g-2">
                                     <div class="col-md-6">
-                                        <label class="form-label"><?= Yii::t('app', 'Quantity (N)') ?></label>
+                                        <label class="form-label"><?= $labels['quantity'] ?></label>
                                         <input type="number" class="form-control rdw-interval-value" min="1" max="999" value="1">
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label"><?= Yii::t('app', 'Unit') ?></label>
+                                        <label class="form-label"><?= $labels['unit'] ?></label>
                                         <select class="form-select rdw-interval-unit">
-                                            <option value="days"><?= Yii::t('app', 'Days') ?></option>
-                                            <option value="months"><?= Yii::t('app', 'Months') ?></option>
-                                            <option value="years"><?= Yii::t('app', 'Years') ?></option>
+                                            <option value="days"><?= Yii::t('davidrnk.recurring', 'Days') ?></option>
+                                            <option value="months"><?= Yii::t('davidrnk.recurring', 'Months') ?></option>
+                                            <option value="years"><?= Yii::t('davidrnk.recurring', 'Years') ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -82,29 +85,48 @@ if (is_string($value)) {
                         <!-- Monthly -->
                         <div class="col-12 d-none rdw-section-monthly">
                             <div class="mb-3 p-3 border rounded" style="background: #f9f9f9;">
-                                <h6><i class="bi bi-calendar-month"></i> <?= Yii::t('app', 'Monthly') ?></h6>
-                                <label class="form-label"><?= Yii::t('app', 'Month day') ?> (1-31)</label>
+                                <h6><i class="bi bi-calendar-month"></i> <?= Yii::t('davidrnk.recurring', 'Monthly') ?></h6>
+                                <label class="form-label"><?= $labels['month_day'] ?> (1-31)</label>
                                 <input type="number" class="form-control rdw-monthly-day" min="1" max="31" value="1">
+
+                                <!-- Adjustment option (shown only when applicable) -->
+                                <div class="mt-2 rdw-adjust-wrapper d-none">
+                                    <label class="form-label small fw-bold"><?= $labels['adjust'] ?></label>
+                                    <select class="form-select rdw-adjust">
+                                        <option value="previous"><?= $labels['adjust_previous'] ?></option>
+                                        <option value="next"><?= $labels['adjust_next'] ?></option>
+                                    </select>
+                                    <div class="form-text text-muted small"><?= Yii::t('davidrnk.recurring', 'When the chosen day does not exist in a month, decide whether to use the previous valid day or advance by one day.') ?></div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Yearly -->
                         <div class="col-12 d-none rdw-section-yearly">
                             <div class="mb-3 p-3 border rounded" style="background: #f9f9f9;">
-                                <h6><i class="bi bi-calendar-year"></i> <?= Yii::t('app', 'Yearly') ?></h6>
+                                <h6><i class="bi bi-calendar-year"></i> <?= Yii::t('davidrnk.recurring', 'Yearly') ?></h6>
                                 <div class="row g-2">
                                     <div class="col-md-6">
-                                        <label class="form-label"><?= Yii::t('app', 'Day') ?></label>
+                                        <label class="form-label"><?= Yii::t('davidrnk.recurring', 'Day') ?></label>
                                         <input type="number" class="form-control rdw-yearly-day" min="1" max="31" value="31">
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label"><?= Yii::t('app', 'Month') ?></label>
+                                        <label class="form-label"><?= Yii::t('davidrnk.recurring', 'Month') ?></label>
                                         <select class="form-select rdw-yearly-month">
-                                            <?php for ($m = 1; $m <= 12; $m++): ?>
-                                                <option value="<?= $m ?>"><?= \DateTime::createFromFormat('!m', $m)->format('F') ?></option>
-                                            <?php endfor; ?>
+                                            <?php foreach ($months as $monthNum => $monthName): ?>
+                                                <option value="<?= $monthNum ?>"><?= Html::encode($monthName) ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
+                                </div>
+                                <!-- Adjustment option for yearly when applicable (e.g., Feb 29) -->
+                                <div class="mt-2 rdw-adjust-wrapper-yearly d-none">
+                                    <label class="form-label small fw-bold"><?= $labels['adjust'] ?></label>
+                                    <select class="form-select rdw-adjust">
+                                        <option value="previous"><?= $labels['adjust_previous'] ?></option>
+                                        <option value="next"><?= $labels['adjust_next'] ?></option>
+                                    </select>
+                                    <div class="form-text text-muted small"><?= Yii::t('davidrnk.recurring', 'When the chosen day may not exist in some years (e.g. Feb 29), decide whether to use the previous valid day or advance by one day.') ?></div>
                                 </div>
                             </div>
                         </div>
@@ -112,15 +134,15 @@ if (is_string($value)) {
                         <!-- Specific date -->
                         <div class="col-12 d-none rdw-section-specific">
                             <div class="mb-3 p-3 border rounded" style="background: #f9f9f9;">
-                                <h6><i class="bi bi-calendar-day"></i> <?= Yii::t('app', 'Specific date') ?></h6>
-                                <label class="form-label"><?= Yii::t('app', 'Select the date') ?></label>
+                                <h6><i class="bi bi-calendar-day"></i> <?= Yii::t('davidrnk.recurring', 'Specific date') ?></h6>
+                                <label class="form-label"><?= Yii::t('davidrnk.recurring', 'Select the date') ?></label>
                                 <input type="date" class="form-control rdw-specific-date">
                             </div>
                         </div>
 
                         <!-- Preview -->
                         <div class="col-12 mt-3">
-                            <label class="form-label fw-bold"><?= Yii::t('app', 'Preview') ?></label>
+                            <label class="form-label fw-bold"><i class="bi bi-eye"></i> <?= $labels['preview'] ?></label>
                             <div class="form-control rdw-preview" style="min-height:44px;"></div>
                             <div class="form-text text-danger rdw-validation"></div>
                         </div>
@@ -128,8 +150,8 @@ if (is_string($value)) {
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= Yii::t('app', 'Cancel') ?></button>
-                    <button type="button" class="btn btn-primary rdw-save"><?= Yii::t('app', 'Save') ?></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= $labels['cancel'] ?></button>
+                    <button type="button" class="btn btn-primary rdw-save"><?= $labels['save'] ?></button>
                 </div>
             </div>
         </div>
