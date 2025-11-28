@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 - 2025-11-28
+### Fixed
+- Full compatibility with nested and multiple widgets:
+
+  - The widget now prioritizes the `name` attribute passed in `options['name']`, then `$this->name`, and finally model+attribute.
+  - This ensures that hidden fields correctly generate indexed/nested names, both initial and dynamic.
+
 ## 1.0.0 - 2025-11-26 - Initial Release
 
 ### Added
