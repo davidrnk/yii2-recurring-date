@@ -67,10 +67,14 @@ class RecurringDate extends Widget
         $view = $this->getView();
         RecurringDateAsset::register($view);
 
-        $name = $this->name;
+        $name = null;
         $value = $this->value;
 
-        if ($this->model && $this->attribute) {
+        if (isset($this->options['name']) && !empty($this->options['name'])) {
+            $name = $this->options['name'];
+        } elseif (!empty($this->name)) {
+            $name = $this->name;
+        } elseif ($this->model && $this->attribute) {
             $name = Html::getInputName($this->model, $this->attribute);
             $value = Html::getAttributeValue($this->model, $this->attribute);
         }
