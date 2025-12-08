@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2 - 2025-12-08
+### Fixed
+- Corrected case-sensitivity issue in production environments by renaming the directory `core` to `Core` to fully align with PSR-4 autoloading rules.
+- Resolved autoloading failures for `RecurringDateEngine` in Linux deployments.
+
+### Improved
+- Updated internal paths and namespaces to ensure consistent class discovery across Windows and Linux.
+- Minor refactor in widget initialization to strengthen cross-environment compatibility.
+
 ## 1.0.1 - 2025-11-28
 ### Fixed
 - Full compatibility with nested and multiple widgets:
