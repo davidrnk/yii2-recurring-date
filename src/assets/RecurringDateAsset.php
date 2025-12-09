@@ -18,7 +18,7 @@ class RecurringDateAsset extends AssetBundle
         'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css'
     ];
     public $js = [
-        'js/recurring-date.js?v1.0.0',
+        'js/recurring-date.js?v1.0.1',
     ];
     public $depends = [
         'yii\web\YiiAsset',

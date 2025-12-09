@@ -47,13 +47,13 @@
             if (Intl?.DateTimeFormat) {
                 try {
                     return new Intl.DateTimeFormat(locale, { month: 'long' })
-                                   .format(new Date(2000, index - 1, 1));
+                        .format(new Date(2000, index - 1, 1));
                 } catch { /* fallback */ }
             }
 
             const MAP = [
-                'January','February','March','April','May','June',
-                'July','August','September','October','November','December'
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
             ];
 
             return MAP[index - 1] || index;
@@ -122,7 +122,7 @@
 
                     // static invalid combos that should be rejected in the UI
                     if (cfg.month === 2 && cfg.day > 29) return 'Invalid date: February has at most 29 days';
-                    if ([4,6,9,11].includes(cfg.month) && cfg.day === 31) return 'Invalid date: the selected month has only 30 days';
+                    if ([4, 6, 9, 11].includes(cfg.month) && cfg.day === 31) return 'Invalid date: the selected month has only 30 days';
 
                     return null;
 
@@ -446,7 +446,7 @@
         const json = JSON.stringify(cfg);
         this.$hidden.val(json).trigger('change');
 
-        const human = this.$hidden.data('human') || RDWEngine.human(cfg, this.locale, this.translations);
+        const human = RDWEngine.human(cfg, this.locale, this.translations);
         this.$text.val(human);
 
         RDWUI.hideModal(this);
