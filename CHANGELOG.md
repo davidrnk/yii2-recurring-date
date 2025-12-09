@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 - 2025-12-09
+### Fixed
+- Fixed the recurring date input visual update; the widget now updates the visible text input when a user modifies a preloaded value.
+
 ## 1.0.2 - 2025-12-08
 ### Fixed
 - Corrected case-sensitivity issue in production environments by renaming the directory `core` to `Core` to fully align with PSR-4 autoloading rules.
